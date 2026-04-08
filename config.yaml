@@ -1,0 +1,64 @@
+data:
+  train_path: "D:/Codes/PaperCodes/GraduationProject/academic_research/TF/Datasets/aki_splits/train.csv"
+  val_path: "D:/Codes/PaperCodes/GraduationProject/academic_research/TF/Datasets/aki_splits/val.csv"
+  test_path: "D:/Codes/PaperCodes/GraduationProject/academic_research/TF/Datasets/aki_splits/test.csv"
+
+  dynamic_cols: [
+    "hr_avg", "rr_avg", "sbp_min", "map_avg", "spo2_avg", "temp_f_avg",
+    "urine_output_6h", "scr_avg", "bun_avg", "lactate_avg", "ph_avg",
+    "na_avg", "k_avg", "hgb_avg", "platelets_avg", "wbc_avg",
+    "albumin_avg", "inr_avg", "scr_change_rate", "scr_min_history",
+    "bun_min_history", "bun_cr_ratio", "shock_index", "wbc_alb_ratio",
+    "uo_mean_history", "uo_drop_flag"
+  ]
+
+  static_cols: [
+    "admission_age", "gender", "weight_kg",
+    "history_hypertension", "history_diabetes", "history_ckd", "history_chf"
+  ]
+
+  target_col: "target_label"
+  group_col: "stay_id"
+  time_col: "start_time"
+
+  max_seq_len: 12
+  use_oversampling: True
+
+  augmentation:
+    enable_feature_masking: True
+    feature_mask_prob: 0.5
+    masked_cols: ["scr_avg", "scr_change_rate", "scr_min_history"]
+
+    enable_time_masking: True
+    time_mask_prob: 0.5
+    max_mask_steps: 2
+
+dataloader:
+  batch_size: 64
+  num_workers: 0
+  pin_memory: True
+
+train:
+  device: "cuda"
+  save_dir: "train_results_dual_stream"
+  epochs: 25
+  lr: 1e-3
+  weight_decay: 1e-4
+  pos_weight: 1.0
+
+model:
+  d_model: 64
+  nhead: 4
+  num_layers: 2
+  dim_feedforward: 128
+  dropout: 0.3
+
+  static_hidden_dim: 32
+  fusion_type: "gated"
+
+predict:
+  device: "cuda"
+  output_dir: "./results_dual_stream"
+  weight_path: "./train_results_dual_stream/best.pth"
+  interpretability:
+    enable_shap: True
