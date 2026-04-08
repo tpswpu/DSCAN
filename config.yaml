@@ -1,7 +1,7 @@
 data:
-  train_path: "D:/Codes/PaperCodes/GraduationProject/academic_research/TF/Datasets/aki_splits/train.csv"
-  val_path: "D:/Codes/PaperCodes/GraduationProject/academic_research/TF/Datasets/aki_splits/val.csv"
-  test_path: "D:/Codes/PaperCodes/GraduationProject/academic_research/TF/Datasets/aki_splits/test.csv"
+  train_path: "train_path"
+  val_path: "val_path"
+  test_path: "test_path"
 
   dynamic_cols: [
     "hr_avg", "rr_avg", "sbp_min", "map_avg", "spo2_avg", "temp_f_avg",
